@@ -134,6 +134,8 @@ class AppSettingsPlugin() : MethodCallHandler, FlutterPlugin, ActivityAware {
             }
         } else if (call.method == "app_settings") {
             openAppSettings(asAnotherTask)
+        } else if (call.method == "android_language_settings") {
+            openSettings(Settings.ACTION_LOCALE_SETTINGS, asAnotherTask)
         }
         else if (call.method == "device_settings") {
             openSettings(Settings.ACTION_SETTINGS, asAnotherTask)

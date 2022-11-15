@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 
@@ -128,6 +129,16 @@ class AppSettings {
     bool asAnotherTask = false,
   }) async {
     _channel.invokeMethod('app_settings', {
+      'asAnotherTask': asAnotherTask,
+    });
+  }
+
+  /// Future async method call to open android language specific settings screen.
+  static Future<void> openAndroidLanguageSettings({
+    bool asAnotherTask = false,
+  }) async {
+    if (Platform.isIOS) return;
+    _channel.invokeMethod('android_language_settings', {
       'asAnotherTask': asAnotherTask,
     });
   }
