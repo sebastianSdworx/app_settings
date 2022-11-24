@@ -143,6 +143,16 @@ class AppSettings {
     });
   }
 
+  /// Future async method call to open android app language specific settings screen.
+  static Future<void> openAndroidAppLanguageSettings({
+    bool asAnotherTask = false,
+  }) async {
+    if (Platform.isIOS) return;
+    _channel.invokeMethod('android_app_language_settings', {
+      'asAnotherTask': asAnotherTask,
+    });
+  }
+
   /// Future async method call to open NCF settings.
   static Future<void> openNFCSettings({
     bool asAnotherTask = false,

@@ -42,6 +42,14 @@ class AppSettingsPlugin() : MethodCallHandler, FlutterPlugin, ActivityAware {
         }
     }
 
+    private fun openAppLanguageSettings(asAnotherTask: Boolean = false) {
+        val intent = Intent(Settings.ACTION_APP_LOCALE_SETTINGS)
+        if (asAnotherTask) intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val uri = Uri.fromParts("package", this.activity.packageName, null)
+        intent.data = uri
+        this.activity.startActivity(intent)
+    }
+
     private fun openAppSettings(asAnotherTask: Boolean = false) {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
         if (asAnotherTask) intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -127,26 +135,24 @@ class AppSettingsPlugin() : MethodCallHandler, FlutterPlugin, ActivityAware {
         } else if (call.method == "battery_optimization") {
             openSettings(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS, asAnotherTask)
         } else if (call.method == "vpn") {
-            if(Build.VERSION.SDK_INT >= 24) {
+            if (Build.VERSION.SDK_INT >= 24) {
                 openSettings(Settings.ACTION_VPN_SETTINGS, asAnotherTask)
-            }else{
+            } else {
                 openSettings("android.net.vpn.SETTINGS", asAnotherTask)
             }
         } else if (call.method == "app_settings") {
             openAppSettings(asAnotherTask)
         } else if (call.method == "android_language_settings") {
             openSettings(Settings.ACTION_LOCALE_SETTINGS, asAnotherTask)
-        }
-        else if (call.method == "device_settings") {
+        } else if (call.method == "android_app_language_settings") {
+            openAppLanguageSettings(asAnotherTask)
+        }  else if (call.method == "device_settings") {
             openSettings(Settings.ACTION_SETTINGS, asAnotherTask)
-        }
-        else if (call.method == "accessibility") {
+        } else if (call.method == "accessibility") {
             openSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS, asAnotherTask)
-        }
-        else if (call.method == "development") {
+        } else if (call.method == "development") {
             openSettings(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS, asAnotherTask)
-        }
-        else if(call.method == "hotspot") {
+        } else if (call.method == "hotspot") {
             val intent = Intent()
             intent.setClassName("com.android.settings", "com.android.settings.TetherSettings")
             openSettingsWithCustomIntent(intent, asAnotherTask)
